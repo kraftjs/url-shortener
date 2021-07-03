@@ -1,4 +1,4 @@
-interface RecordDTO {
+export interface IRecord {
     id: number,
     hash: string,
     url: string,

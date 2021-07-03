@@ -23,7 +23,7 @@ const onVisitTrigger = (tableName: string) => `
     `;
 
 export async function up(knex: Knex): Promise<void> {
-    await knex.schema.createTable('records', (table) => {
+    await knex.schema.createTable('records', (table: Knex.TableBuilder) => {
         table.increments('id', {primaryKey: true});
         table.string('hash').unique();
         table.string('url');
