@@ -1,4 +1,4 @@
-import {hostname} from "os";
+import { hostname } from 'os';
 import https from 'https';
 import http from 'http';
 
@@ -9,5 +9,5 @@ const server = process.env.NODE_ENV === 'production' ? https.createServer(app) :
 const port = process.env.NODE_ENV === 'production' ? 8443 : 8080;
 
 server.listen(port, hostname(), () => {
-    console.log(`Server running at ${protocol}://${hostname()}:${port}/`)
+    console.log(`Server running at ${protocol}://${hostname()}:${port}/`);
 });

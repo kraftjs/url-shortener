@@ -1,5 +1,5 @@
-import { Hash, IRecord } from '../interfaces/Record'
-import { recordModel } from '../models'
+import { Hash, IRecord } from '../interfaces/Record';
+import { recordModel } from '../models';
 
 class RecordService {
     getRecord(hash: Hash): Promise<IRecord> {

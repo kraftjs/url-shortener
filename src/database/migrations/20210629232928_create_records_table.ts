@@ -1,4 +1,4 @@
-import {Knex} from 'knex';
+import { Knex } from 'knex';
 
 const ON_UPDATE_TIMESTAMP_FUNCTION = `
         CREATE OR REPLACE FUNCTION on_update_timestamp()
@@ -24,12 +24,11 @@ const onVisitTrigger = (tableName: string) => `
 
 export async function up(knex: Knex): Promise<void> {
     await knex.schema.createTable('records', (table: Knex.TableBuilder) => {
-        table.increments('id', {primaryKey: true});
+        table.increments('id', { primaryKey: true });
         table.string('hash').unique();
         table.string('url');
         table.integer('visits');
         table.timestamps(true, true); // adds created_at and updated_at timestamp columns
-
     });
     knex.raw(ON_UPDATE_TIMESTAMP_FUNCTION);
     knex.raw(onVisitTrigger('records'));

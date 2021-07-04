@@ -21,4 +21,4 @@ class ApiError {
     }
 }
 
-export default ApiError
+export default ApiError;

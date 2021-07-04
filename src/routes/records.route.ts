@@ -1,9 +1,9 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-import { recordController } from '../controllers'
+import { recordController } from '../controllers';
 
 const router = Router();
 
-router.get('/:hash', recordController.readRecord)
+router.get('/:hash', recordController.readRecord);
 
 export default router;

@@ -1,5 +1,3 @@
-import recordModel from './record.model'
+import recordModel from './record.model';
 
-export {
-    recordModel,
-}
+export { recordModel };

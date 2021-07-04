@@ -1,4 +1,4 @@
-import {Router} from "express";
+import { Router } from 'express';
 import recordsRouter from './records.route';
 
 const router = Router();

@@ -1,8 +1,8 @@
-import {Request, Response, NextFunction} from "express";
-import {ApiError} from "../errors";
+import { NextFunction, Request, Response } from 'express';
+import { ApiError } from '../errors';
 
 const unknownEndpoint = (req: Request, res: Response, next: NextFunction) => {
-    next(ApiError.resourceNotFound('unknown endpoint'))
-}
+    next(ApiError.resourceNotFound('unknown endpoint'));
+};
 
 export default unknownEndpoint;

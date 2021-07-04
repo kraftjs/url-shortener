@@ -1,5 +1,3 @@
-import recordService from './record.service'
+import recordService from './record.service';
 
-export {
-    recordService
-}
+export { recordService };
