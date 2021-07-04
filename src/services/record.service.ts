@@ -2,7 +2,7 @@ import { Hash, IRecord } from '../interfaces/Record';
 import { recordModel } from '../models';
 
 class RecordService {
-    getRecord(hash: Hash): Promise<IRecord> {
+    async readRecord(hash: Hash): Promise<IRecord | undefined> {
         return recordModel.findByHash(hash);
     }
 }
