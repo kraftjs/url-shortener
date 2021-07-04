@@ -1,19 +1,14 @@
-// import config from './utils/config';
 import express from 'express';
-import cors from 'cors';
+import cors from 'cors'
 import router from "./routes";
-// import middleware from './utils/middleware';
-// import logger from './utils/logger';
+import {errorHandler, unknownEndpoint} from './middleware'
 
 const app = express();
 
-// connect to db (?)
-
-app.use(cors()); // or cors middleware
-// express.static middleware
+app.use(cors())
 app.use(express.json());
-app.use('/', router)
-// unknownEndpoint middleware
-// errorHandler middleware
+app.use('/', router);
+app.use(unknownEndpoint);
+app.use(errorHandler);
 
 export default app;

@@ -1,46 +1,16 @@
 import {NextFunction, Request, Response} from "express";
-
-// import recordService
+import {ApiError} from "../errors";
+import { recordService } from "../services";
 
 class RecordController {
-    async createRecord(req: Request, res: Response, next: NextFunction) {
-        try {
-
-        } catch (err) {
-            next(err)
-        }
-    }
-
-    async readRecords(req: Request, res: Response, next: NextFunction) {
-        try {
-
-        } catch (err) {
-            next(err)
-        }
-    }
-
     async readRecord(req: Request, res: Response, next: NextFunction) {
-        const {hash} = req.params;
         try {
-
-        } catch (err) {
-            next(err)
-        }
-    }
-
-    async updateRecord(req: Request, res: Response, next: NextFunction) {
-        const {hash} = req.params;
-        try {
-
-        } catch (err) {
-            next(err)
-        }
-    }
-
-    async deleteRecord(req: Request, res: Response, next: NextFunction) {
-        const {hash} = req.params;
-        try {
-
+            const { hash } = req.params;
+            const record = await recordService.getRecord(hash);
+            if (!record) {
+                return next(ApiError.resourceNotFound(`record with hash ${hash} not found`))
+            }
+            res.json(record);
         } catch (err) {
             next(err)
         }

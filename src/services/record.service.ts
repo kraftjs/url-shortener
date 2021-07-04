@@ -1,13 +1,9 @@
-import {recordDAO} from '../dao'
+import { Hash, IRecord } from '../interfaces/Record'
+import { recordModel } from '../models'
 
 class RecordService {
-    updateRecord(recordDto: IRecord) {
-
-    }
-
-    createRecord(recordDto) {
-        const {hash, url} = recordDto;
-        recordDAO.createRecord();
+    getRecord(hash: Hash): Promise<IRecord> {
+        return recordModel.findByHash(hash);
     }
 }
 

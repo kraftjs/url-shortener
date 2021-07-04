@@ -1,5 +1,5 @@
-import recordDAO from './record.dao'
+import recordModel from './record.model'
 
 export {
-    recordDAO,
+    recordModel,
 }
