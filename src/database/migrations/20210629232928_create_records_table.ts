@@ -27,7 +27,7 @@ export async function up(knex: Knex): Promise<void> {
         table.increments('id', { primaryKey: true });
         table.string('hash').unique();
         table.string('url');
-        table.integer('visits');
+        table.integer('visits').defaultTo(0);
         table.timestamps(true, true); // adds created_at and updated_at timestamp columns
     });
     knex.raw(ON_UPDATE_TIMESTAMP_FUNCTION);
