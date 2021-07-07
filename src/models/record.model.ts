@@ -3,7 +3,11 @@ import { Hash, IRecord } from '../interfaces/Record';
 
 class RecordModel {
     async findByHash(hash: Hash): Promise<IRecord | undefined> {
-        return db.select().from(Table.RECORDS).where({ hash }).first();
+        try {
+            return db.select().from(Table.RECORDS).where({ hash }).first();
+        } catch (e) {
+            throw new Error('something went wrong');
+        }
     }
 }
 

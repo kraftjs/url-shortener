@@ -8,7 +8,7 @@ class RecordController {
             const { hash } = req.params;
             const record = await recordService.readRecord(hash);
             if (!record) {
-                return next(ApiError.resourceNotFound(`record with hash ${hash} not found`));
+                return next(ApiError.resourceNotFound(`record not found`));
             }
             res.json(record);
         } catch (err) {

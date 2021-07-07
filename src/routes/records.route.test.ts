@@ -1,25 +1,25 @@
 import request from 'supertest';
-
+import app from '../app';
 import db, { Table } from '../database/connection';
 import { testRecord } from '../../test/testUtils';
-import app from '../app';
 
 const server = app.listen(3000);
 
 afterAll(() => server.close());
 
 describe('HTTP GET on /records/:hash', () => {
-    it('should return a record', async () => {
-
+    test('returns a record when passed a valid hash param', async () => {
         const response = await request(app)
             .get(`/records/${testRecord.hash}`)
             .expect(200)
             .expect('Content-Type', /json/);
 
-        expect(response).toContain(testRecord);
+        const stringifiedTestRecord = JSON.parse(JSON.stringify(testRecord))
+
+        expect(response.body).toEqual(stringifiedTestRecord);
     });
 
-    it('should return undefined when passing an invalid hash', async () => {
+    test('returns a resourceNotFound error when passed an invalid hash param', async () => {
         await db(Table.RECORDS).del().where({ hash: testRecord.hash });
 
         const response = await request(app)
@@ -27,6 +27,6 @@ describe('HTTP GET on /records/:hash', () => {
             .expect(404)
             .expect('Content-Type', /json/);
 
-        expect(response).toEqual(undefined);
+        expect(response.body).toEqual('record not found');
     });
 });

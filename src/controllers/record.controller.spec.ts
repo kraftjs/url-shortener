@@ -12,7 +12,7 @@ afterEach(() => jest.resetAllMocks());
 
 describe('Method recordController.getRecord', () => {
     it('should respond with correct record when passed a valid hash', async () => {
-        mocked(recordService.readRecord).mockResolvedValueOnce(testRecord);
+        mocked(recordService.readRecord).mockResolvedValueOnce(Promise.resolve(testRecord));
         const mReq = { params: { hash: testRecord.hash } } as unknown as Request;
         const mRes = { json: jest.fn() } as unknown as Response;
         const mNext = jest.fn();
@@ -24,7 +24,7 @@ describe('Method recordController.getRecord', () => {
     });
 
     it('should call next with a resourceNotFound error if passed an invalid hash', async () => {
-        mocked(recordService.readRecord).mockResolvedValueOnce(undefined);
+        mocked(recordService.readRecord).mockResolvedValueOnce(Promise.resolve(undefined));
         const mReq = { params: { hash: 'invalidHash' } } as unknown as Request;
         const mRes = { json: jest.fn() } as unknown as Response;
         const mNext = jest.fn();
@@ -32,6 +32,19 @@ describe('Method recordController.getRecord', () => {
         await recordController.getRecord(mReq, mRes, mNext);
 
         expect(mRes.json).toBeCalledTimes(0);
-        expect(mNext).toBeCalledWith(ApiError.resourceNotFound('record with hash invalidHash not found'));
+        expect(mNext).toBeCalledWith(ApiError.resourceNotFound('record not found'));
+    });
+
+    it('should call next with the provided error if the promise returned by recordService is rejected', async () => {
+        mocked(recordService.readRecord).mockResolvedValueOnce(Promise.reject(new Error('something went wrong')));
+        const mReq = { params: { hash: 'invalidHash' } } as unknown as Request;
+        const mRes = { json: jest.fn() } as unknown as Response;
+        const mNext = jest.fn();
+
+        await recordController.getRecord(mReq, mRes, mNext);
+
+        expect(mRes.json).toBeCalledTimes(0);
+        expect(mNext).not.toBeCalledWith(ApiError.resourceNotFound('record not found'));
+        expect(mNext).toBeCalledWith(Error('something went wrong'));
     });
 });

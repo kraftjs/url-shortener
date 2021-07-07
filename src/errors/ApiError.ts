@@ -1,7 +1,9 @@
-class ApiError {
-    constructor(public code: number, public message: string) {
-        this.code = code;
-        this.message = message;
+class ApiError extends Error {
+    private constructor(public statusCode: number, public message: string) {
+        super(message);
+        this.statusCode = statusCode;
+
+        Object.setPrototypeOf(this, ApiError.prototype);
     }
 
     static badRequest(msg: string) {
