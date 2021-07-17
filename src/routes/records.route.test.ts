@@ -2,6 +2,7 @@ import request from 'supertest';
 import app from '../app';
 import db, { Table } from '../database/connection';
 import { testRecord } from '../../test/testUtils';
+import {ErrorMessages} from "../errors";
 
 const server = app.listen(3000);
 
@@ -20,13 +21,13 @@ describe('HTTP GET on /records/:hash', () => {
     });
 
     test('returns a resourceNotFound error when passed an invalid hash param', async () => {
-        await db(Table.RECORDS).del().where({ hash: testRecord.hash });
+        await db(Table.Records).del().where({ hash: testRecord.hash });
 
         const response = await request(app)
             .get(`/records/${testRecord.hash}`)
             .expect(404)
             .expect('Content-Type', /json/);
 
-        expect(response.body).toEqual('record not found');
+        expect(response.body).toEqual(ErrorMessages.ResourceNotFound);
     });
 });

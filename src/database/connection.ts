@@ -6,7 +6,7 @@ const knexConfig = config[nodeEnv];
 const db = knex(knexConfig);
 
 export enum Table {
-    RECORDS = 'records',
+    Records = 'records',
 }
 
 export default db;
