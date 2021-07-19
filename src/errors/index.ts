@@ -1,4 +1,4 @@
 import ApiError from './ApiError';
-import ErrorMessages from "./ErrorMessages";
+import ErrorMessage from "./ErrorMessage";
 
-export { ApiError, ErrorMessages };
+export { ApiError, ErrorMessage };

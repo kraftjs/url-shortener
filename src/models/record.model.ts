@@ -1,13 +1,13 @@
 import db, { Table } from '../database/connection';
 import { Hash, IRecord, Url } from '../interfaces/Record';
-import { ErrorMessages } from '../errors';
+import { ErrorMessage } from '../errors';
 
 class RecordModel {
     async findByHash(hash: Hash): Promise<IRecord | undefined> {
         try {
             return db.select().from(Table.Records).where({ hash }).first();
         } catch (e) {
-            throw new Error(ErrorMessages.Internal);
+            throw new Error(ErrorMessage.Internal);
         }
     }
 
@@ -19,9 +19,9 @@ class RecordModel {
             return savedRecord;
         } catch (e) {
             if (e instanceof Error && e.message.includes('duplicate key value')) {
-                throw new Error(ErrorMessages.Conflict);
+                throw new Error(ErrorMessage.Conflict);
             }
-            throw new Error(ErrorMessages.Internal);
+            throw new Error(ErrorMessage.Internal);
         }
     }
 }

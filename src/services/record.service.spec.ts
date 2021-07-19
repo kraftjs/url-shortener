@@ -3,7 +3,7 @@ import { mocked } from 'ts-jest/utils';
 import { recordModel } from '../models';
 import recordService from './record.service';
 import { testRecord } from '../../test/testUtils';
-import { ErrorMessages } from '../errors';
+import { ErrorMessage } from '../errors';
 import db, { Table } from '../database/connection';
 
 jest.mock('../models');
@@ -35,17 +35,19 @@ describe('Method recordService.createRecord', () => {
         await expect(recordService.createRecord(testRecord.url)).resolves.toEqual(testRecord);
     });
 
-    it('should return a promise that rejects to an error when passed an invalid url', async () => {
-        await expect(recordService.createRecord('invalidUrl')).rejects.toThrow(ErrorMessages.BadRequest);
+    it('should throw an error when passed an invalid url', () => {
+        expect(() => {
+            recordService.createRecord('invalidUrl');
+        }).toThrow(ErrorMessage.BadRequest);
     });
 
-    it('should return a promise that rejects to an error when record already exists', async () => {
-        mocked(recordModel.insertRecord).mockResolvedValueOnce(Promise.reject(new Error(ErrorMessages.Conflict)));
-        await expect(recordService.createRecord(testRecord.url)).rejects.toThrow(ErrorMessages.Conflict);
+    it('should return a promise that rejects to an error when record already exists', () => {
+        mocked(recordModel.insertRecord).mockResolvedValueOnce(Promise.reject(new Error(ErrorMessage.Conflict)));
+        expect(recordService.createRecord(testRecord.url)).rejects.toThrow(ErrorMessage.Conflict);
     });
 
-    it('should return a promise that rejects to an error when encountering a problem', async () => {
-        mocked(recordModel.insertRecord).mockResolvedValueOnce(Promise.reject(new Error(ErrorMessages.Internal)));
-        await expect(recordService.createRecord(testRecord.url)).rejects.toThrow(ErrorMessages.Internal);
+    it('should return a promise that rejects to an error when encountering a problem', () => {
+        mocked(recordModel.insertRecord).mockResolvedValueOnce(Promise.reject(new Error(ErrorMessage.Internal)));
+        expect(recordService.createRecord(testRecord.url)).rejects.toThrow(ErrorMessage.Internal);
     });
 });

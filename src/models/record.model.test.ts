@@ -1,7 +1,7 @@
 import recordModel from './record.model';
 import db, { Table } from '../database/connection';
 import { testRecord } from '../../test/testUtils';
-import {ErrorMessages} from "../errors";
+import {ErrorMessage} from "../errors";
 
 describe('retrieving a record with recordModel.findByHash', () => {
     test('returns a promise that resolves to a record when passed a valid hash', async () => {
@@ -33,7 +33,7 @@ describe('inserting a record with recordModel.insertRecord', () => {
 
     test('rejects and returns an error when not passed a unique hash', async () => {
         await expect(recordModel.insertRecord(testRecord.hash, testRecord.url)).rejects.toThrow(
-            ErrorMessages.Conflict,
+            ErrorMessage.Conflict,
         );
     });
 });

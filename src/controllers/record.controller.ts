@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { ApiError, ErrorMessages } from '../errors';
+import { ApiError, ErrorMessage } from '../errors';
 import { recordService } from '../services';
 
 class RecordController {
@@ -8,7 +8,7 @@ class RecordController {
             const { hash } = req.params;
             const record = await recordService.readRecord(hash);
             if (!record) {
-                return next(ApiError.resourceNotFound(ErrorMessages.ResourceNotFound));
+                return next(ApiError.resourceNotFound(ErrorMessage.ResourceNotFound));
             }
             res.json(record);
         } catch (err) {
@@ -22,10 +22,10 @@ class RecordController {
             const record = await recordService.createRecord(url);
             res.json(record);
         } catch (err) {
-            if (err instanceof Error && err.message === ErrorMessages.Conflict) {
-                return next(ApiError.conflict(ErrorMessages.Conflict));
-            } else if (err instanceof Error && err.message === ErrorMessages.BadRequest) {
-                return next(ApiError.badRequest(ErrorMessages.BadRequest));
+            if (err instanceof Error && err.message === ErrorMessage.Conflict) {
+                return next(ApiError.conflict(ErrorMessage.Conflict));
+            } else if (err instanceof Error && err.message === ErrorMessage.BadRequest) {
+                return next(ApiError.badRequest(ErrorMessage.BadRequest));
             }
             next(err);
         }
