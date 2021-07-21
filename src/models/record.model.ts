@@ -3,6 +3,14 @@ import { Hash, IRecord, Url } from '../interfaces/Record';
 import { ErrorMessage } from '../errors';
 
 class RecordModel {
+    async findAllRecords(): Promise<IRecord[]> {
+        try {
+            return db.select().from(Table.Records);
+        } catch (e) {
+            throw new Error(ErrorMessage.Internal);
+        }
+    }
+
     async findByHash(hash: Hash): Promise<IRecord | undefined> {
         try {
             return db.select().from(Table.Records).where({ hash }).first();

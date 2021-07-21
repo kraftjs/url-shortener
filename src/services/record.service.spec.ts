@@ -10,6 +10,18 @@ jest.mock('../models');
 
 afterEach(() => jest.resetAllMocks());
 
+describe('Method recordService.readAllRecords', () => {
+    it('should return a promise that resolves to a list of records', () => {
+        mocked(recordModel.findAllRecords).mockResolvedValueOnce(Promise.resolve([testRecord]));
+        expect(recordService.readAllRecords()).resolves.toEqual([testRecord]);
+    });
+
+    it('should return a promise that rejects to an error when encountering a problem', () => {
+        mocked(recordModel.findAllRecords).mockResolvedValueOnce(Promise.reject(new Error('something went wrong')));
+        expect(recordService.readAllRecords()).rejects.toThrow('something went wrong');
+    });
+});
+
 describe('Method recordService.readRecord', () => {
     it('should return a promise that resolves to a record when passed a valid hash', () => {
         mocked(recordModel.findByHash).mockResolvedValueOnce(Promise.resolve(testRecord));

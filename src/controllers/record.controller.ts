@@ -3,6 +3,16 @@ import { ApiError, ErrorMessage } from '../errors';
 import { recordService } from '../services';
 
 class RecordController {
+    async getAllRecords(req: Request, res: Response, next: NextFunction) {
+        try {
+            const records = await recordService.readAllRecords();
+            res.json(records);
+        } catch (err) {
+            console.log(err);
+            next(err);
+        }
+    }
+
     async getRecord(req: Request, res: Response, next: NextFunction) {
         try {
             const { hash } = req.params;

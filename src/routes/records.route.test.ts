@@ -1,13 +1,22 @@
 import request from 'supertest';
 import app from '../app';
 import db, { Table } from '../database/connection';
-import { testRecord, parseRecord } from '../../test/testUtils';
+import { parseJSON, testRecord } from '../../test/testUtils';
 import { ErrorMessage } from '../errors';
-import {IRecord} from "../interfaces/Record";
 
 const server = app.listen(3000);
 
 afterAll(() => server.close());
+
+describe('HTTP GET on /records', () => {
+    test('returns a list of records', async () => {
+        const response = await request(app)
+            .get('/records')
+            .expect(200)
+            .expect('Content-Type', /json/);
+        expect(parseJSON(response.body)).toEqual([testRecord]);
+    });
+});
 
 describe('HTTP GET on /records/:hash', () => {
     test('returns a record when passed a valid hash param', async () => {
@@ -16,7 +25,7 @@ describe('HTTP GET on /records/:hash', () => {
             .expect(200)
             .expect('Content-Type', /json/);
 
-        expect(parseRecord(response.body)).toEqual(testRecord);
+        expect(parseJSON(response.body)).toEqual(testRecord);
     });
 
     test('returns a resourceNotFound error when passed an invalid hash param', async () => {
@@ -41,21 +50,25 @@ describe('HTTP POST on /records', () => {
             .expect(200)
             .expect('Content-Type', /json/);
 
-        const savedRecord = await db.select().from(Table.Records).where({hash: testRecord.hash}).first();
-        expect(parseRecord(response.body)).toEqual(savedRecord);
+        const savedRecord = await db.select().from(Table.Records).where({ hash: testRecord.hash }).first();
+        expect(parseJSON(response.body)).toEqual(savedRecord);
 
-        const timeAdjustedTestRecord = {...testRecord, created_at: savedRecord.created_at, updated_at: savedRecord.updated_at }
-        expect(parseRecord(response.body)).toEqual(timeAdjustedTestRecord);
+        const timeAdjustedTestRecord = {
+            ...testRecord,
+            created_at: savedRecord.created_at,
+            updated_at: savedRecord.updated_at,
+        };
+        expect(parseJSON(response.body)).toEqual(timeAdjustedTestRecord);
     });
 
     test('responds with a 409 - Conflict error when passed a duplicate url', async () => {
         const response = await request(app)
-                .post('/records')
-                .send({ url: testRecord.url })
-                .expect(409)
-                .expect('Content-Type', /json/);
+            .post('/records')
+            .send({ url: testRecord.url })
+            .expect(409)
+            .expect('Content-Type', /json/);
 
-        expect(response.body).toEqual(ErrorMessage.Conflict)
+        expect(response.body).toEqual(ErrorMessage.Conflict);
     });
 
     test('responds with a 400 - Bad Request error when passed an invalid url', async () => {
@@ -65,6 +78,6 @@ describe('HTTP POST on /records', () => {
             .expect(400)
             .expect('Content-Type', /json/);
 
-        expect(response.body).toEqual(ErrorMessage.BadRequest)
+        expect(response.body).toEqual(ErrorMessage.BadRequest);
     });
 });

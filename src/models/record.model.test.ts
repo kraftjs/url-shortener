@@ -1,7 +1,20 @@
 import recordModel from './record.model';
 import db, { Table } from '../database/connection';
 import { testRecord } from '../../test/testUtils';
-import {ErrorMessage} from "../errors";
+import { ErrorMessage } from '../errors';
+
+describe('retrieving records with recordModel.findAllRecords', () => {
+    test('returns a promise that resolves to an array of records', async () => {
+        const response = await recordModel.findAllRecords();
+        expect(response).toEqual([testRecord]);
+    });
+
+    test('returns a promise that resolves to an empty array when there are no records', async () => {
+        await db(Table.Records).del().where({ hash: testRecord.hash });
+        const response = await recordModel.findAllRecords();
+        expect(response).toEqual([]);
+    });
+});
 
 describe('retrieving a record with recordModel.findByHash', () => {
     test('returns a promise that resolves to a record when passed a valid hash', async () => {
@@ -32,8 +45,6 @@ describe('inserting a record with recordModel.insertRecord', () => {
     });
 
     test('rejects and returns an error when not passed a unique hash', async () => {
-        await expect(recordModel.insertRecord(testRecord.hash, testRecord.url)).rejects.toThrow(
-            ErrorMessage.Conflict,
-        );
+        await expect(recordModel.insertRecord(testRecord.hash, testRecord.url)).rejects.toThrow(ErrorMessage.Conflict);
     });
 });
