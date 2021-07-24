@@ -18,15 +18,11 @@ describe('retrieving records with recordModel.findAllRecords', () => {
 
 describe('retrieving records with recordModel.findStaleRecords', () => {
     test('returns a promise that resolves to an array of records', async () => {
-        // check if testRecord.updated_at < current time;
-        // record was added ms ago so record.updated_at is older than current time
-        // it is older than the provided time so we return it
+        // testRecord is older than the provided time (now) so we return it
         let staleRecords = await recordModel.findStaleRecords(new Date());
         expect(staleRecords).toEqual([testRecord]);
 
-        // check if testRecord.updated_at < 10 seconds ago;
-        // record was added ms ago so record.updated_at is newer than 10 seconds ago
-        // it is newer than the provided time so we don't return it
+        // testRecord is newer than the provided time (10s ago) so we don't return it
         staleRecords = await recordModel.findStaleRecords(new Date(Date.now() - 10_000));
         expect(staleRecords).toEqual([]);
 

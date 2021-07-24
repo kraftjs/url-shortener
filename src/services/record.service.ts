@@ -6,7 +6,7 @@ import { Hash, IRecord, Url } from '../interfaces/Record';
 import { ErrorMessage } from '../errors';
 
 class RecordService {
-    private HOURS_SINCE_LAST_VISIT_BEFORE_RECORD_DELETION = 1;
+    private HOURS_SINCE_LAST_VISIT_BEFORE_RECORD_DELETION = 24;
     private HOUR_IN_MS = 1000 * 60 * 60;
     private INTERVAL_DELAY = 1000 * 60 * 15;
 
@@ -44,7 +44,6 @@ class RecordService {
         const staleRecords = await recordModel.findStaleRecords(expiration);
         if (staleRecords.length) {
             const hashesOfStaleRecords = staleRecords.map((staleRecord) => staleRecord.hash);
-            console.log('hashes:', hashesOfStaleRecords);
             await Promise.all(
                 hashesOfStaleRecords.map(async (hash) => {
                     await recordModel.deleteRecord(hash);

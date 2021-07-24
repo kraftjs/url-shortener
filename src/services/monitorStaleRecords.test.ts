@@ -4,6 +4,8 @@ import recordService from './record.service';
 
 jest.useFakeTimers();
 
+// Repeatedly retries test because jest assertions will sometimes return
+// before the database finishes its operation
 const withRetries = async (fn: Function) => {
     const JestAssertionError = (() => {
         try {
