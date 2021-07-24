@@ -8,7 +8,6 @@ class RecordController {
             const records = await recordService.readAllRecords();
             res.json(records);
         } catch (err) {
-            console.log(err);
             next(err);
         }
     }

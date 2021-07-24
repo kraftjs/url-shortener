@@ -16,6 +16,23 @@ describe('retrieving records with recordModel.findAllRecords', () => {
     });
 });
 
+describe('retrieving records with recordModel.findStaleRecords', () => {
+    test('returns a promise that resolves to an array of records', async () => {
+        // check if testRecord.updated_at < current time;
+        // record was added ms ago so record.updated_at is older than current time
+        // it is older than the provided time so we return it
+        let staleRecords = await recordModel.findStaleRecords(new Date());
+        expect(staleRecords).toEqual([testRecord]);
+
+        // check if testRecord.updated_at < 10 seconds ago;
+        // record was added ms ago so record.updated_at is newer than 10 seconds ago
+        // it is newer than the provided time so we don't return it
+        staleRecords = await recordModel.findStaleRecords(new Date(Date.now() - 10_000));
+        expect(staleRecords).toEqual([]);
+
+    });
+});
+
 describe('retrieving a record with recordModel.findByHash', () => {
     test('returns a promise that resolves to a record when passed a valid hash', async () => {
         const response = await recordModel.findByHash(testRecord.hash);
@@ -48,3 +65,15 @@ describe('inserting a record with recordModel.insertRecord', () => {
         await expect(recordModel.insertRecord(testRecord.hash, testRecord.url)).rejects.toThrow(ErrorMessage.Conflict);
     });
 });
+
+describe('deleting a record with recordModel.deleteRecord', () => {
+    test('returns a promise that resolves to the number of deleted records', async () => {
+        let numOfDeletedRecords = await recordModel.deleteRecord(testRecord.hash);
+        expect(numOfDeletedRecords).toBe(1);
+
+        await expect(recordModel.findByHash(testRecord.hash)).resolves.toEqual(undefined);
+
+        numOfDeletedRecords = await recordModel.deleteRecord(testRecord.hash);
+        expect(numOfDeletedRecords).toBe(0);
+    })
+})

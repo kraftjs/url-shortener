@@ -11,6 +11,14 @@ class RecordModel {
         }
     }
 
+    async findStaleRecords(expiration: Date): Promise<IRecord[]> {
+        try {
+            return db.select().from(Table.Records).where('updated_at', '<', expiration);
+        } catch (e) {
+            throw new Error(ErrorMessage.Internal);
+        }
+    }
+
     async findByHash(hash: Hash): Promise<IRecord | undefined> {
         try {
             return db.select().from(Table.Records).where({ hash }).first();
@@ -29,6 +37,14 @@ class RecordModel {
             if (e instanceof Error && e.message.includes('duplicate key value')) {
                 throw new Error(ErrorMessage.Conflict);
             }
+            throw new Error(ErrorMessage.Internal);
+        }
+    }
+
+    async deleteRecord(hash: Hash): Promise<number> {
+        try {
+            return db(Table.Records).del().where({ hash });
+        } catch (e) {
             throw new Error(ErrorMessage.Internal);
         }
     }
