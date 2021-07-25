@@ -135,3 +135,46 @@ describe('Method recordController.postRecord', () => {
         expect(mNext).toBeCalledWith(Error(ErrorMessage.Internal));
     });
 });
+
+describe('Method recordController.redirectRecord', () => {
+    it('should respond with a url when passed a valid hash', async () => {
+        mocked(recordService.readRecord).mockResolvedValueOnce(Promise.resolve(testRecord));
+
+        const mReq = { params: { hash: testRecord.hash } } as unknown as Request;
+        const mRes = { redirect: jest.fn() } as unknown as Response;
+        const mNext = jest.fn();
+
+        await recordController.redirectRecord(mReq, mRes, mNext);
+
+        expect(mRes.redirect).toBeCalledWith(testRecord.url);
+        expect(mNext).toBeCalledTimes(0);
+    });
+
+    it('should call next with a resourceNotFound error if passed an invalid hash', async () => {
+        mocked(recordService.readRecord).mockResolvedValueOnce(Promise.resolve(undefined));
+
+        const mReq = { params: { hash: 'invalidHash' } } as unknown as Request;
+        const mRes = { redirect: jest.fn() } as unknown as Response;
+        const mNext = jest.fn();
+
+        await recordController.redirectRecord(mReq, mRes, mNext);
+
+        expect(mRes.redirect).toBeCalledTimes(0);
+        expect(mNext).toBeCalledWith(ApiError.resourceNotFound(ErrorMessage.ResourceNotFound));
+    });
+
+    it('should call next with the provided error if the promise returned by recordService is rejected', async () => {
+        mocked(recordService.readRecord).mockResolvedValueOnce(Promise.reject(new Error(ErrorMessage.Internal)));
+
+        const mReq = { params: { hash: 'invalidHash' } } as unknown as Request;
+        const mRes = { redirect: jest.fn() } as unknown as Response;
+        const mNext = jest.fn();
+
+        await recordController.redirectRecord(mReq, mRes, mNext);
+
+        expect(mRes.redirect).toBeCalledTimes(0);
+        expect(mNext).not.toBeCalledWith(ApiError.resourceNotFound(ErrorMessage.ResourceNotFound));
+        expect(mNext).toBeCalledWith(Error(ErrorMessage.Internal));
+    });
+});
+

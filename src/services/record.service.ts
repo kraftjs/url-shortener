@@ -10,6 +10,12 @@ class RecordService {
     private HOUR_IN_MS = 1000 * 60 * 60;
     private INTERVAL_DELAY = 1000 * 60 * 15;
 
+    constructor() {
+        if (process.env.NODE_ENV === 'production') {
+            this.monitorStaleRecords();
+        }
+    }
+
     get gracePeriod(): number {
         return this.HOURS_SINCE_LAST_VISIT_BEFORE_RECORD_DELETION * this.HOUR_IN_MS;
     }
@@ -24,6 +30,10 @@ class RecordService {
 
     readRecord(hash: Hash): Promise<IRecord | undefined> {
         return recordModel.findByHash(hash);
+    }
+
+    updateAfterRedirect(hash: Hash): Promise<IRecord | undefined> {
+        return recordModel.updateVisitsAndTime(hash);
     }
 
     createRecord(url: Url): Promise<IRecord> {

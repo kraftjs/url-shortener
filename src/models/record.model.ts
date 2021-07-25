@@ -27,6 +27,19 @@ class RecordModel {
         }
     }
 
+    async updateVisitsAndTime(hash: Hash): Promise<IRecord | undefined> {
+        try {
+            const [updatedRecord] = await db(Table.Records)
+                .increment('visits', 1)
+                .update('updated_at', db.fn.now())
+                .where({ hash })
+                .returning(['id', 'hash', 'url', 'visits', 'created_at', 'updated_at']);
+            return updatedRecord;
+        } catch (e) {
+            throw new Error(ErrorMessage.Internal);
+        }
+    }
+
     async insertRecord(hash: Hash, url: Url): Promise<IRecord> {
         try {
             const [savedRecord]: IRecord[] = await db(Table.Records)

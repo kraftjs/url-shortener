@@ -39,6 +39,20 @@ class RecordController {
             next(err);
         }
     }
+
+    async redirectRecord(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { hash } = req.params;
+            const record = await recordService.readRecord(hash);
+            if (!record) {
+                return next(ApiError.resourceNotFound(ErrorMessage.ResourceNotFound));
+            }
+            res.redirect(record.url);
+            await recordService.updateAfterRedirect(hash);
+        } catch (err) {
+            next(err);
+        }
+    }
 }
 
 export default new RecordController();

@@ -17,8 +17,8 @@ describe('Method recordService.readAllRecords', () => {
     });
 
     it('should return a promise that rejects to an error when encountering a problem', () => {
-        mocked(recordModel.findAllRecords).mockResolvedValueOnce(Promise.reject(new Error('something went wrong')));
-        expect(recordService.readAllRecords()).rejects.toThrow('something went wrong');
+        mocked(recordModel.findAllRecords).mockResolvedValueOnce(Promise.reject(new Error(ErrorMessage.Internal)));
+        expect(recordService.readAllRecords()).rejects.toThrow(ErrorMessage.Internal);
     });
 });
 
@@ -34,8 +34,25 @@ describe('Method recordService.readRecord', () => {
     });
 
     it('should return a promise that rejects to an error when encountering a problem', () => {
-        mocked(recordModel.findByHash).mockResolvedValueOnce(Promise.reject(new Error('something went wrong')));
-        expect(recordService.readRecord(testRecord.hash)).rejects.toThrow('something went wrong');
+        mocked(recordModel.findByHash).mockResolvedValueOnce(Promise.reject(new Error(ErrorMessage.Internal)));
+        expect(recordService.readRecord(testRecord.hash)).rejects.toThrow(ErrorMessage.Internal);
+    });
+});
+
+describe('Method recordService.updateAfterRedirect', () => {
+    it('should return a promise that resolves to a record', () => {
+        mocked(recordModel.updateVisitsAndTime).mockResolvedValueOnce(Promise.resolve(testRecord));
+        expect(recordService.updateAfterRedirect(testRecord.hash)).resolves.toEqual(testRecord);
+    });
+
+    it('should return a promise that resolves to undefined when passed an invalid hash', () => {
+        mocked(recordModel.updateVisitsAndTime).mockResolvedValueOnce(Promise.resolve(undefined));
+        expect(recordService.updateAfterRedirect(testRecord.hash)).resolves.toEqual(undefined);
+    });
+
+    it('should return a promise that rejects to an error when encountering a problem', () => {
+        mocked(recordModel.updateVisitsAndTime).mockResolvedValueOnce(Promise.reject(new Error(ErrorMessage.Internal)));
+        expect(recordService.updateAfterRedirect(testRecord.hash)).rejects.toThrow(ErrorMessage.Internal);
     });
 });
 

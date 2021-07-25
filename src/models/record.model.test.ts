@@ -25,7 +25,6 @@ describe('retrieving records with recordModel.findStaleRecords', () => {
         // testRecord is newer than the provided time (10s ago) so we don't return it
         staleRecords = await recordModel.findStaleRecords(new Date(Date.now() - 10_000));
         expect(staleRecords).toEqual([]);
-
     });
 });
 
@@ -38,6 +37,21 @@ describe('retrieving a record with recordModel.findByHash', () => {
     test('returns a promise that resolves to undefined when passed an invalid hash', async () => {
         await db(Table.Records).del().where({ hash: testRecord.hash });
         const response = await recordModel.findByHash(testRecord.hash);
+        expect(response).toEqual(undefined);
+    });
+});
+
+describe('updating a record with recordModel.updateVisitsAndTime', () => {
+    test('returns a promise that resolves to an updated record when passed a valid hash', async () => {
+        const response = await recordModel.updateVisitsAndTime(testRecord.hash);
+        expect(response).not.toEqual(undefined);
+        expect(response?.visits).toBe(testRecord.visits + 1);
+        expect(response?.updated_at).not.toEqual(testRecord.updated_at);
+    });
+
+    test('returns a promise that resolves to undefined when passed an invalid hash', async () => {
+        await db(Table.Records).del().where({ hash: testRecord.hash });
+        const response = await recordModel.updateVisitsAndTime(testRecord.hash);
         expect(response).toEqual(undefined);
     });
 });
@@ -71,5 +85,5 @@ describe('deleting a record with recordModel.deleteRecord', () => {
 
         numOfDeletedRecords = await recordModel.deleteRecord(testRecord.hash);
         expect(numOfDeletedRecords).toBe(0);
-    })
-})
+    });
+});

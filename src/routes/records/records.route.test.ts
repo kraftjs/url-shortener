@@ -1,8 +1,8 @@
 import request from 'supertest';
-import app from '../app';
-import db, { Table } from '../database/connection';
-import { parseJSON, testRecord } from '../../test/testUtils';
-import { ErrorMessage } from '../errors';
+import app from '../../app';
+import db, { Table } from '../../database/connection';
+import { parseJSON, testRecord } from '../../../test/testUtils';
+import { ErrorMessage } from '../../errors';
 
 const server = app.listen(3000);
 
@@ -14,6 +14,7 @@ describe('HTTP GET on /records', () => {
             .get('/records')
             .expect(200)
             .expect('Content-Type', /json/);
+
         expect(parseJSON(response.body)).toEqual([testRecord]);
     });
 });

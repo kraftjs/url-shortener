@@ -5,19 +5,10 @@ import { createHash } from 'crypto';
 const url = 'www.example.org';
 const hash = createHash('md5').update(url).digest('hex');
 
-const testRecord: IRecord = {
-    hash,
-    url,
-};
-
+let testRecord: IRecord;
 const createRecord = async () => {
     await db(Table.Records).insert({ hash, url });
-    const { id, visits, created_at, updated_at } = await db.select().from(Table.Records).where({ hash }).first();
-    testRecord.id = id;
-
-    testRecord.visits = visits;
-    testRecord.created_at = created_at;
-    testRecord.updated_at = updated_at;
+    testRecord = await db.select().from(Table.Records).where({ hash }).first();
 };
 
 interface IJsonRecord {
