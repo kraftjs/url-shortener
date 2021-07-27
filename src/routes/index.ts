@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import redirectRouter from './redirect.route';
+
+import redirectRouter from './home.route';
 import recordsRouter from './records/records.route';
 
 const router = Router();

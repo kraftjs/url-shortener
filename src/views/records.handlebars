@@ -1,0 +1,17 @@
+<div>
+    <h1>Records:</h1>
+    {{#if records}}
+        <ul>
+            {{#each records}}
+                <li>
+                    <a href={{records.url}}>{{records.url}}</a>
+                    <small>hash: {{records.hash}}</small>
+                    <time datetime={{records.updated_at}}>{{records.updated_at}}</time>
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <h2>No records are saved to the database.</h2>
+    {{/if}}
+
+</div>

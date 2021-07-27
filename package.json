@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "npm run build && NODE_ENV=production node dist/src/server.js",
-    "dev": "NODE_ENV=development nodemon --inspect src/server.ts",
+    "dev": "NODE_ENV=development nodemon src/server.ts",
     "test": "NODE_ENV=test jest --runInBand",
     "migrate": "npm run migrate:test & npm run migrate:dev",
     "migrate:test": "knex migrate:latest --knexfile knexfile.ts --env test",
@@ -24,6 +24,7 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-handlebars": "^5.3.2",
     "knex": "^0.95.6",
     "pg": "^8.6.0",
     "validator": "^13.6.0"
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.10",
     "@types/express": "^4.17.12",
+    "@types/express-handlebars": "^5.3.1",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.14.0",
     "@types/supertest": "^2.0.11",

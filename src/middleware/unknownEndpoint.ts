@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+
 import { ApiError } from '../errors';
 
 const unknownEndpoint = (req: Request, res: Response, next: NextFunction) => {

@@ -1,4 +1,5 @@
 import request from 'supertest';
+
 import app from '../../app';
 import db, { Table } from '../../database/connection';
 import { parseJSON, testRecord } from '../../../test/testUtils';
@@ -10,34 +11,25 @@ afterAll(() => server.close());
 
 describe('HTTP GET on /records', () => {
     test('returns a list of records', async () => {
-        const response = await request(app)
-            .get('/records')
-            .expect(200)
-            .expect('Content-Type', /json/);
-
-        expect(parseJSON(response.body)).toEqual([testRecord]);
+        await request(app).get('/records').expect(200).expect('Content-Type', 'text/html; charset=utf-8');
     });
 });
 
 describe('HTTP GET on /records/:hash', () => {
     test('returns a record when passed a valid hash param', async () => {
-        const response = await request(app)
+        await request(app)
             .get(`/records/${testRecord.hash}`)
             .expect(200)
-            .expect('Content-Type', /json/);
-
-        expect(parseJSON(response.body)).toEqual(testRecord);
+            .expect('Content-Type', 'text/html; charset=utf-8');
     });
 
     test('returns a resourceNotFound error when passed an invalid hash param', async () => {
         await db(Table.Records).truncate().where({ hash: testRecord.hash });
 
-        const response = await request(app)
+        await request(app)
             .get(`/records/${testRecord.hash}`)
             .expect(404)
-            .expect('Content-Type', /json/);
-
-        expect(response.body).toEqual(ErrorMessage.ResourceNotFound);
+            .expect('Content-Type', 'text/html; charset=utf-8');
     });
 });
 

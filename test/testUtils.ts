@@ -1,6 +1,7 @@
+import { createHash } from 'crypto';
+
 import db, { Table } from '../src/database/connection';
 import { Hash, IRecord, Url } from '../src/interfaces/Record';
-import { createHash } from 'crypto';
 
 const url = 'www.example.org';
 const hash = createHash('md5').update(url).digest('hex');

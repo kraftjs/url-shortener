@@ -10,45 +10,60 @@ jest.mock('../services');
 
 afterEach(() => jest.resetAllMocks());
 
-describe('Method recordController.getAllRecords', () => {
-    it('should respond with an array of records', async () => {
+describe('Method recordController.viewHomePage', () => {
+    it('should call render with the "home" view', () => {
+        const mReq = {} as unknown as Request;
+        const mRes = { render: jest.fn() } as unknown as Response;
+
+        recordController.viewHomePage(mReq, mRes);
+
+        expect(mRes.render).toBeCalledWith('home');
+    });
+});
+
+describe('Method recordController.viewAllRecords', () => {
+    it('should call render with the "records" view and a context object with an array of records', async () => {
         mocked(recordService.readAllRecords).mockResolvedValueOnce(Promise.resolve([testRecord]));
 
         const mReq = {} as unknown as Request;
-        const mRes = { json: jest.fn() } as unknown as Response;
+        const mRes = { render: jest.fn() } as unknown as Response;
         const mNext = jest.fn();
 
-        await recordController.getAllRecords(mReq, mRes, mNext);
+        const contextObj = { records: [testRecord] }
+
+        await recordController.viewAllRecords(mReq, mRes, mNext);
 
         expect(mNext).toBeCalledTimes(0);
-        expect(mRes.json).toBeCalledWith([testRecord]);
+        expect(mRes.render).toBeCalledWith('records', contextObj);
     });
 
     it('should call next with the provided error if the promise returned by recordService is rejected', async () => {
         mocked(recordService.readAllRecords).mockResolvedValueOnce(Promise.reject(new Error(ErrorMessage.Internal)));
 
         const mReq = {} as unknown as Request;
-        const mRes = { json: jest.fn() } as unknown as Response;
+        const mRes = { render: jest.fn() } as unknown as Response;
         const mNext = jest.fn();
 
-        await recordController.getAllRecords(mReq, mRes, mNext);
+        await recordController.viewAllRecords(mReq, mRes, mNext);
 
-        expect(mRes.json).toBeCalledTimes(0);
+        expect(mRes.render).toBeCalledTimes(0);
         expect(mNext).toBeCalledWith(Error(ErrorMessage.Internal));
     });
 });
 
-describe('Method recordController.getRecord', () => {
-    it('should respond with correct record when passed a valid hash', async () => {
+describe('Method recordController.viewRecord', () => {
+    it('should call render with the "record" view and a context object with a record', async () => {
         mocked(recordService.readRecord).mockResolvedValueOnce(Promise.resolve(testRecord));
 
         const mReq = { params: { hash: testRecord.hash } } as unknown as Request;
-        const mRes = { json: jest.fn() } as unknown as Response;
+        const mRes = { render: jest.fn() } as unknown as Response;
         const mNext = jest.fn();
 
-        await recordController.getRecord(mReq, mRes, mNext);
+        const contextObj = { record: testRecord }
 
-        expect(mRes.json).toBeCalledWith(testRecord);
+        await recordController.viewRecord(mReq, mRes, mNext);
+
+        expect(mRes.render).toBeCalledWith('record', contextObj);
         expect(mNext).toBeCalledTimes(0);
     });
 
@@ -56,12 +71,12 @@ describe('Method recordController.getRecord', () => {
         mocked(recordService.readRecord).mockResolvedValueOnce(Promise.resolve(undefined));
 
         const mReq = { params: { hash: 'invalidHash' } } as unknown as Request;
-        const mRes = { json: jest.fn() } as unknown as Response;
+        const mRes = { render: jest.fn() } as unknown as Response;
         const mNext = jest.fn();
 
-        await recordController.getRecord(mReq, mRes, mNext);
+        await recordController.viewRecord(mReq, mRes, mNext);
 
-        expect(mRes.json).toBeCalledTimes(0);
+        expect(mRes.render).toBeCalledTimes(0);
         expect(mNext).toBeCalledWith(ApiError.resourceNotFound(ErrorMessage.ResourceNotFound));
     });
 
@@ -69,12 +84,12 @@ describe('Method recordController.getRecord', () => {
         mocked(recordService.readRecord).mockResolvedValueOnce(Promise.reject(new Error(ErrorMessage.Internal)));
 
         const mReq = { params: { hash: 'invalidHash' } } as unknown as Request;
-        const mRes = { json: jest.fn() } as unknown as Response;
+        const mRes = { render: jest.fn() } as unknown as Response;
         const mNext = jest.fn();
 
-        await recordController.getRecord(mReq, mRes, mNext);
+        await recordController.viewRecord(mReq, mRes, mNext);
 
-        expect(mRes.json).toBeCalledTimes(0);
+        expect(mRes.render).toBeCalledTimes(0);
         expect(mNext).not.toBeCalledWith(ApiError.resourceNotFound(ErrorMessage.ResourceNotFound));
         expect(mNext).toBeCalledWith(Error(ErrorMessage.Internal));
     });

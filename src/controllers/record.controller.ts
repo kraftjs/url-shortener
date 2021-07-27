@@ -1,25 +1,32 @@
 import { NextFunction, Request, Response } from 'express';
+
 import { ApiError, ErrorMessage } from '../errors';
 import { recordService } from '../services';
 
 class RecordController {
-    async getAllRecords(req: Request, res: Response, next: NextFunction) {
+    viewHomePage(req: Request, res: Response) {
+        res.render('home');
+    }
+
+    async viewAllRecords(req: Request, res: Response, next: NextFunction) {
         try {
             const records = await recordService.readAllRecords();
-            res.json(records);
+            const context = { records };
+            res.render('records', context);
         } catch (err) {
             next(err);
         }
     }
 
-    async getRecord(req: Request, res: Response, next: NextFunction) {
+    async viewRecord(req: Request, res: Response, next: NextFunction) {
         try {
             const { hash } = req.params;
             const record = await recordService.readRecord(hash);
             if (!record) {
                 return next(ApiError.resourceNotFound(ErrorMessage.ResourceNotFound));
             }
-            res.json(record);
+            const context = { record };
+            res.render('record', context);
         } catch (err) {
             next(err);
         }
