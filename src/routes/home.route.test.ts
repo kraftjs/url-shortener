@@ -17,7 +17,7 @@ describe('HTTP GET on "/"', () => {
 
 describe('HTTP GET on "/:hash"', () => {
     test('redirects to a url if hash is stored in db and increments visit count and updates updated_at', async () => {
-        await request(app).get(`/${testRecord.hash}`).expect(302).expect('Location', testRecord.url);
+        await request(app).get(`/${testRecord.hash}`).expect(301).expect('Location', testRecord.url);
 
         const redirectedRecord: IRecord = await db
             .select()

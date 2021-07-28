@@ -105,7 +105,7 @@ describe('Method recordController.postRecord', () => {
 
         await recordController.postRecord(mReq, mRes, mNext);
 
-        expect(mRes.redirect).toBeCalledWith(`records/${testRecord.hash}`);
+        expect(mRes.redirect).toBeCalledWith(303, `records/${testRecord.hash}`);
         expect(mNext).toBeCalledTimes(0);
     });
 
@@ -147,7 +147,7 @@ describe('Method recordController.redirectRecord', () => {
 
         await recordController.redirectRecord(mReq, mRes, mNext);
 
-        expect(mRes.redirect).toBeCalledWith(testRecord.url);
+        expect(mRes.redirect).toBeCalledWith(301, testRecord.url);
         expect(mNext).toBeCalledTimes(0);
     });
 

@@ -40,7 +40,7 @@ describe('HTTP POST on /records', () => {
         await request(app)
             .post('/records')
             .send({ url: testRecord.url })
-            .expect(302)
+            .expect(303)
             .expect('Content-Type', 'text/plain; charset=utf-8')
             .expect('Location', `records/${testRecord.hash}`);
 
@@ -59,7 +59,7 @@ describe('HTTP POST on /records', () => {
         await request(app)
             .post('/records')
             .send({ url: testRecord.url })
-            .expect(302)
+            .expect(303)
             .expect('Content-Type', 'text/plain; charset=utf-8')
             .expect('Location', `records/${testRecord.hash}`);
 

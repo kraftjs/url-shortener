@@ -36,7 +36,7 @@ class RecordController {
         try {
             const { url } = req.body;
             const record = await recordService.createRecord(url);
-            res.redirect(`records/${record.hash}`);
+            res.redirect(303, `records/${record.hash}`);
         } catch (err) {
             if (err instanceof Error && err.message === ErrorMessage.BadRequest) {
                 return next(ApiError.badRequest(ErrorMessage.BadRequest));
@@ -52,7 +52,7 @@ class RecordController {
             if (!record) {
                 return next(ApiError.resourceNotFound(ErrorMessage.ResourceNotFound));
             }
-            res.redirect(record.url);
+            res.redirect(301, record.url);
             await recordService.updateAfterRedirect(hash);
         } catch (err) {
             next(err);
