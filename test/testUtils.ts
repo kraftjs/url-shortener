@@ -3,7 +3,7 @@ import { createHash } from 'crypto';
 import db, { Table } from '../src/database/connection';
 import { Hash, IRecord, Url } from '../src/interfaces/Record';
 
-const url = 'www.example.org';
+const url = 'http://www.example.org';
 const hash = createHash('md5').update(url).digest('hex');
 
 let testRecord: IRecord;

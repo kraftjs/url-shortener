@@ -2,7 +2,7 @@ import request from 'supertest';
 
 import app from '../../app';
 import db, { Table } from '../../database/connection';
-import { parseJSON, testRecord } from '../../../test/testUtils';
+import { testRecord } from '../../../test/testUtils';
 import { ErrorMessage } from '../../errors';
 
 const server = app.listen(3000);
@@ -34,34 +34,36 @@ describe('HTTP GET on /records/:hash', () => {
 });
 
 describe('HTTP POST on /records', () => {
-    test('creates and responds with a record when passed a valid, non-duplicate url', async () => {
+    test('when passed a valid, non-duplicate url it creates the record and redirects to the new record page', async () => {
         await db(Table.Records).truncate().where({ hash: testRecord.hash });
 
-        const response = await request(app)
+        await request(app)
             .post('/records')
             .send({ url: testRecord.url })
-            .expect(200)
-            .expect('Content-Type', /json/);
+            .expect(302)
+            .expect('Content-Type', 'text/plain; charset=utf-8')
+            .expect('Location', `records/${testRecord.hash}`);
 
         const savedRecord = await db.select().from(Table.Records).where({ hash: testRecord.hash }).first();
-        expect(parseJSON(response.body)).toEqual(savedRecord);
-
         const timeAdjustedTestRecord = {
             ...testRecord,
             created_at: savedRecord.created_at,
             updated_at: savedRecord.updated_at,
         };
-        expect(parseJSON(response.body)).toEqual(timeAdjustedTestRecord);
+        expect(savedRecord).toEqual(timeAdjustedTestRecord);
     });
 
-    test('responds with a 409 - Conflict error when passed a duplicate url', async () => {
-        const response = await request(app)
+    test('redirects to existing record page when passed a duplicate url', async () => {
+        const preExistingRecord = await db.select().from(Table.Records).where({ hash: testRecord.hash }).first();
+
+        await request(app)
             .post('/records')
             .send({ url: testRecord.url })
-            .expect(409)
-            .expect('Content-Type', /json/);
+            .expect(302)
+            .expect('Content-Type', 'text/plain; charset=utf-8')
+            .expect('Location', `records/${testRecord.hash}`);
 
-        expect(response.body).toEqual(ErrorMessage.Conflict);
+        expect(preExistingRecord).toEqual(testRecord);
     });
 
     test('responds with a 400 - Bad Request error when passed an invalid url', async () => {

@@ -6,7 +6,7 @@ import { Hash, IRecord, Url } from '../interfaces/Record';
 import { ErrorMessage } from '../errors';
 
 class RecordService {
-    private HOURS_SINCE_LAST_VISIT_BEFORE_RECORD_DELETION = 24;
+    private HOURS_SINCE_LAST_VISIT_BEFORE_RECORD_DELETION = 1;
     private HOUR_IN_MS = 1000 * 60 * 60;
     private INTERVAL_DELAY = 1000 * 60 * 15;
 
@@ -37,7 +37,7 @@ class RecordService {
     }
 
     createRecord(url: Url): Promise<IRecord> {
-        if (isURL(url, { require_protocol: false })) {
+        if (isURL(url, { require_protocol: true })) {
             const hash = createHash('md5').update(url).digest('hex');
             return recordModel.insertRecord(hash, url);
         } else {

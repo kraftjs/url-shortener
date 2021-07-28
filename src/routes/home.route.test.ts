@@ -29,7 +29,7 @@ describe('HTTP GET on "/:hash"', () => {
         expect(redirectedRecord.updated_at).not.toEqual(testRecord.updated_at);
     });
 
-    test('returns an error when passed an unstored hash', async () => {
+    test('returns a Resource Not Found error when passed an unstored hash', async () => {
         await db(Table.Records).truncate().where({ hash: testRecord.hash });
 
         await request(app).get(`/${testRecord.hash}`).expect(404).expect('Content-Type', 'text/html; charset=utf-8');

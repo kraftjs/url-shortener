@@ -36,11 +36,9 @@ class RecordController {
         try {
             const { url } = req.body;
             const record = await recordService.createRecord(url);
-            res.json(record);
+            res.redirect(`records/${record.hash}`);
         } catch (err) {
-            if (err instanceof Error && err.message === ErrorMessage.Conflict) {
-                return next(ApiError.conflict(ErrorMessage.Conflict));
-            } else if (err instanceof Error && err.message === ErrorMessage.BadRequest) {
+            if (err instanceof Error && err.message === ErrorMessage.BadRequest) {
                 return next(ApiError.badRequest(ErrorMessage.BadRequest));
             }
             next(err);

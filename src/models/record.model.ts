@@ -42,14 +42,16 @@ class RecordModel {
 
     async insertRecord(hash: Hash, url: Url): Promise<IRecord> {
         try {
+            const preExistingRecord = await this.findByHash(hash);
+            if (preExistingRecord) {
+                return preExistingRecord;
+            }
+
             const [savedRecord]: IRecord[] = await db(Table.Records)
                 .insert({ hash, url })
                 .returning(['id', 'hash', 'url', 'visits', 'created_at', 'updated_at']);
             return savedRecord;
         } catch (e) {
-            if (e instanceof Error && e.message.includes('duplicate key value')) {
-                throw new Error(ErrorMessage.Conflict);
-            }
             throw new Error(ErrorMessage.Internal);
         }
     }

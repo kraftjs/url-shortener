@@ -1,7 +1,6 @@
 import recordModel from './record.model';
 import db, { Table } from '../database/connection';
 import { testRecord } from '../../test/testUtils';
-import { ErrorMessage } from '../errors';
 
 describe('retrieving records with recordModel.findAllRecords', () => {
     test('returns a promise that resolves to an array of records', async () => {
@@ -71,8 +70,9 @@ describe('inserting a record with recordModel.insertRecord', () => {
         expect(response).toEqual(savedRecord);
     });
 
-    test('rejects and returns an error when not passed a unique hash', async () => {
-        await expect(recordModel.insertRecord(testRecord.hash, testRecord.url)).rejects.toThrow(ErrorMessage.Conflict);
+    test('when not passed a unique hash, returns the record already saved in database', async () => {
+        const preExistingRecord = await recordModel.insertRecord(testRecord.hash, testRecord.url);
+        expect(preExistingRecord).toEqual(testRecord);
     });
 });
 

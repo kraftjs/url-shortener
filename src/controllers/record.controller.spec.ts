@@ -29,7 +29,7 @@ describe('Method recordController.viewAllRecords', () => {
         const mRes = { render: jest.fn() } as unknown as Response;
         const mNext = jest.fn();
 
-        const contextObj = { records: [testRecord] }
+        const contextObj = { records: [testRecord] };
 
         await recordController.viewAllRecords(mReq, mRes, mNext);
 
@@ -59,7 +59,7 @@ describe('Method recordController.viewRecord', () => {
         const mRes = { render: jest.fn() } as unknown as Response;
         const mNext = jest.fn();
 
-        const contextObj = { record: testRecord }
+        const contextObj = { record: testRecord };
 
         await recordController.viewRecord(mReq, mRes, mNext);
 
@@ -100,38 +100,25 @@ describe('Method recordController.postRecord', () => {
         mocked(recordService.createRecord).mockResolvedValueOnce(Promise.resolve(testRecord));
 
         const mReq = { body: { url: testRecord.url } } as unknown as Request;
-        const mRes = { json: jest.fn() } as unknown as Response;
+        const mRes = { redirect: jest.fn() } as unknown as Response;
         const mNext = jest.fn();
 
         await recordController.postRecord(mReq, mRes, mNext);
 
-        expect(mRes.json).toBeCalledWith(testRecord);
+        expect(mRes.redirect).toBeCalledWith(`records/${testRecord.hash}`);
         expect(mNext).toBeCalledTimes(0);
-    });
-
-    it('should call next with a conflict error if passed an already existing url', async () => {
-        mocked(recordService.createRecord).mockResolvedValueOnce(Promise.reject(new Error(ErrorMessage.Conflict)));
-
-        const mReq = { body: { url: testRecord.url } } as unknown as Request;
-        const mRes = { json: jest.fn() } as unknown as Response;
-        const mNext = jest.fn();
-
-        await recordController.postRecord(mReq, mRes, mNext);
-
-        expect(mRes.json).toBeCalledTimes(0);
-        expect(mNext).toBeCalledWith(ApiError.resourceNotFound(ErrorMessage.Conflict));
     });
 
     it('should call next with a bad request error if passed an invalid url', async () => {
         mocked(recordService.createRecord).mockResolvedValueOnce(Promise.reject(new Error(ErrorMessage.BadRequest)));
 
         const mReq = { body: { url: 'badurl' } } as unknown as Request;
-        const mRes = { json: jest.fn() } as unknown as Response;
+        const mRes = { redirect: jest.fn() } as unknown as Response;
         const mNext = jest.fn();
 
         await recordController.postRecord(mReq, mRes, mNext);
 
-        expect(mRes.json).toBeCalledTimes(0);
+        expect(mRes.redirect).toBeCalledTimes(0);
         expect(mNext).toBeCalledWith(ApiError.resourceNotFound(ErrorMessage.BadRequest));
     });
 
@@ -139,13 +126,12 @@ describe('Method recordController.postRecord', () => {
         mocked(recordService.createRecord).mockResolvedValueOnce(Promise.reject(new Error(ErrorMessage.Internal)));
 
         const mReq = { body: { url: testRecord.url } } as unknown as Request;
-        const mRes = { json: jest.fn() } as unknown as Response;
+        const mRes = { redirect: jest.fn() } as unknown as Response;
         const mNext = jest.fn();
 
         await recordController.postRecord(mReq, mRes, mNext);
 
-        expect(mRes.json).toBeCalledTimes(0);
-        expect(mNext).not.toBeCalledWith(ApiError.resourceNotFound(ErrorMessage.Conflict));
+        expect(mRes.redirect).toBeCalledTimes(0);
         expect(mNext).not.toBeCalledWith(ApiError.resourceNotFound(ErrorMessage.BadRequest));
         expect(mNext).toBeCalledWith(Error(ErrorMessage.Internal));
     });
