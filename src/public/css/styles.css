@@ -1,0 +1,100 @@
+html {
+  box-sizing: border-box;
+  color: #22262a;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, sans-serif;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  background-color: #f9fafb;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: Sansita, serif;
+  letter-spacing: 0.03em;
+}
+
+a {
+  color: #20cb98;
+}
+
+a:visited {
+  color: #076448;
+}
+
+a:hover {
+  color: #076448;
+}
+
+a:active {
+  color: #bf2b58;
+}
+
+.nav-container {
+  background-color: #20cb98;
+}
+
+.nav-container__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0.625em;
+}
+
+.home-link {
+  color: #22262a;
+  font-size: 1.6rem;
+  font-family: Sansita, serif;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+}
+
+.top-nav {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+}
+
+.top-nav > li + li {
+  margin-left: 0.625em;
+}
+
+.top-nav a {
+  display: block;
+  font-size: 0.8rem;
+  padding: 0.3rem 1.25rem;
+  color: white;
+  background: #076448;
+  text-decoration: none;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.top-nav a:hover {
+  background-color: #099067;
+}
+
+.top-nav__featured > a {
+  color: #076448;
+  background-color: white;
+}
+
+.top-nav__featured > a:hover {
+  color: #20cb98;
+  background-color: white;
+}
