@@ -1,6 +1,7 @@
 node_modules/
 requests/
 dist/
+src/public/css
 .idea
 .vscode
 .env
