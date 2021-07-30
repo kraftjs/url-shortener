@@ -1,0 +1,19 @@
+@use 'variables' as var;
+
+.page-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  margin-top: 3em;
+  padding: 1em 0;
+  background-color: var.$light-gray;
+  color: var.$gray;
+}
+
+.page-footer__inner {
+  margin: 0 auto;
+  max-width: 1080px;
+  text-align: center;
+  font-size: 0.8rem;
+}

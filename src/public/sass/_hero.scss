@@ -1,0 +1,26 @@
+@use 'variables' as var;
+
+.hero {
+  background: url(../images/furnished_room.jpg) no-repeat 50% 37%;
+  background-size: cover;
+  margin-bottom: 1.25rem;
+}
+
+.hero__inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 7.5625em 12.625em 12.625em 0;
+  text-align: right;
+}
+
+.hero h2 {
+  font-size: 1.95rem;
+  letter-spacing: -0.02em;
+  margin-top: 0;
+  margin-bottom: 0.125rem;
+}
+
+.hero h5 {
+  margin: 0;
+  font-weight: 300;
+}

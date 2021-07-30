@@ -1,0 +1,23 @@
+@use 'variables' as var;
+
+.button {
+  display: inline-block;
+  padding: 0.4em 1em;
+  color: var.$brand-green;
+  border: 2px solid var.$brand-green;
+  border-radius: 0.5em;
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+
+.button:hover {
+  background-color: var.$dark-green;
+  color: var.$white;
+}
+
+.button--cta {
+  padding: 0.6em 1em;
+  background-color: var.$brand-green;
+  color: var.$white;
+  border: none;
+}

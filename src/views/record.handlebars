@@ -1,1 +1,21 @@
-<p>This record exists, otherwise there would be a 404 - Resource Not Found</p>
+<div class="tile-row">
+    <div class="tile">
+        <div class="card">
+            <div class="card__top">
+                <h2>Record</h2>
+                <a href="/{{record.hash}}">shorturl.dev/{{record.hash}}</a>
+                <cite><a href="{{record.url}}">{{record.url}}</a></cite>
+            </div>
+            <div class="card__bottom">
+                <div>
+                    <strong>{{record.visits}}</strong>
+                    <small>visits</small>
+                </div>
+                <div>
+                    <strong>{{timeRemaining record.updated_at}}</strong>
+                    <small>time remaining</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,23 +1,24 @@
-import { createHash } from 'crypto';
+import {createHash} from 'crypto';
 import isURL from 'validator/lib/isURL';
 
-import { recordModel } from '../models';
-import { Hash, IRecord, Url } from '../interfaces/Record';
-import { ErrorMessage } from '../errors';
+import {recordModel} from '../models';
+import {RECORD_TTL, Hash, IRecord, Url} from '../interfaces/Record';
+import {ErrorMessage} from '../errors';
 
 class RecordService {
-    private HOURS_SINCE_LAST_VISIT_BEFORE_RECORD_DELETION = 1;
+    public staleRecordsTimer;
+    private HOURS_WITHOUT_ACTIVITY_UNTIL_DELETION = RECORD_TTL;
     private HOUR_IN_MS = 1000 * 60 * 60;
-    private INTERVAL_DELAY = 1000 * 60 * 15;
+    private INTERVAL_DELAY = 1000 * 60 * 3;
 
     constructor() {
-        if (process.env.NODE_ENV === 'production') {
-            this.monitorStaleRecords();
+        if (process.env.NODE_ENV !== 'test') {
+            this.staleRecordsTimer = this.monitorStaleRecords();
         }
     }
 
     get gracePeriod(): number {
-        return this.HOURS_SINCE_LAST_VISIT_BEFORE_RECORD_DELETION * this.HOUR_IN_MS;
+        return this.HOURS_WITHOUT_ACTIVITY_UNTIL_DELETION * this.HOUR_IN_MS;
     }
 
     get intervalDelay(): number {
@@ -37,7 +38,7 @@ class RecordService {
     }
 
     createRecord(url: Url): Promise<IRecord> {
-        if (isURL(url, { require_protocol: true })) {
+        if (isURL(url, {require_protocol: true})) {
             const hash = createHash('md5').update(url).digest('hex');
             return recordModel.insertRecord(hash, url);
         } else {

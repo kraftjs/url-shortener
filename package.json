@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "sass": "sass --no-source-map src/public/sass/index.scss src/public/css/styles.css",
-    "copyfiles": "copyfiles -u 1 \"./src/**/*.{css,handlebars}\" dist",
+    "copyfiles": "copyfiles -u 1 \"./src/**/*.{css,svg,jpg,handlebars}\" dist",
     "build": "npm run clean && npm run sass && tsc -p tsconfig.json && npm run copyfiles",
     "start": "npm run build && NODE_ENV=production node dist/server.js",
     "start:dev": "npm run build && NODE_ENV=development node dist/server.js",
@@ -24,11 +24,13 @@
     "url": "git@me.github.com:kraftjs/url-shortener.git"
   },
   "author": "Jason Kraft",
+  "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.2",
+    "handlebars": "^4.7.7",
     "knex": "^0.95.6",
     "pg": "^8.6.0",
     "validator": "^13.6.0"

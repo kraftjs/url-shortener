@@ -27,8 +27,14 @@ h4 {
   letter-spacing: 0.03em;
 }
 
+input, textarea, button {
+  font-family: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
+
 a {
-  color: var.$medium-green;
+  color: var.$brand-green;
 }
 
 a:visited {
@@ -36,7 +42,7 @@ a:visited {
 }
 
 a:hover {
-  color: var.$brand-green;
+  color: var.$medium-green;
 }
 
 a:active {

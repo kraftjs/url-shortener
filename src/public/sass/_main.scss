@@ -1,0 +1,138 @@
+@use 'variables' as var;
+
+.container {
+  margin: 0 auto;
+  max-width: 1080px;
+}
+
+.container > small {
+  display: block;
+  font-size: 0.75em;
+  text-align: center;
+  font-style: italic;
+  margin: 1.25em 10%;
+}
+
+.tile-row {
+  display: flex;
+  margin-bottom: 5rem;
+}
+
+.tile-row > * {
+  flex: 1;
+}
+
+.tile-row > * + * {
+  margin-left: 1.5625em;
+}
+
+.tile {
+  background-color: var.$white;
+  border-radius: 0.3em;
+  padding: 1.5625em;
+}
+
+.tile > * + * {
+  margin-top: 2em;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 42%;
+  min-width: 42%;
+}
+
+.card__top {
+  margin: 0.25em;
+}
+
+.card__top > a {
+  font-size: 1.0625em;
+  font-weight: bold;
+}
+
+.card__top > cite {
+  font-size: 0.75em;
+}
+
+.card__top > cite > a {
+  color: inherit;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.card__top > * + * {
+  display: inline-block;
+  margin-bottom: 0.5em;
+}
+
+.card__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 0.5em 0.25em 0.25em;
+}
+
+.card__bottom > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card__bottom > div > strong {
+  font-size: 1.0625em;
+  font-weight: bold;
+  color: var.$gray;
+}
+
+.card__bottom > div > small {
+  color: var.$medium-gray;
+}
+
+.center {
+  text-align: center;
+}
+
+.error {
+  font-family: Roboto, sans-serif;
+  font-size: 1.25em;
+  color: var.$red;
+  text-decoration: underline;
+}
+
+form {
+  display: flex;
+}
+
+form > input + input {
+  margin-left: 1.5em;
+}
+
+label {
+  display: none;
+}
+
+form > input {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  border-radius: 0.5em;
+}
+
+input[type='url'] {
+  font-size: 1.25em;
+  padding-left: 1em;
+  flex: 1;
+}
+
+input[type='submit'] {
+  font-size: 1.25em;
+  flex-basis: 20%;
+}
+
+p {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}

@@ -5,7 +5,13 @@ import { ErrorMessage } from '../errors';
 class RecordModel {
     async findAllRecords(): Promise<IRecord[]> {
         try {
-            return db.select().from(Table.Records);
+            return db
+                .select()
+                .from(Table.Records)
+                .orderBy([
+                    { column: 'visits', order: 'desc' },
+                    { column: 'updated_at', order: 'desc' },
+                ]);
         } catch (e) {
             throw new Error(ErrorMessage.Internal);
         }

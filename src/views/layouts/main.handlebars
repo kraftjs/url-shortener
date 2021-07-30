@@ -2,9 +2,41 @@
 <html>
 <head>
     <title>shortURL</title>
-    <link rel="stylesheet" href="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&family=Sansita:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-{{{body}}}
+<header class="nav-container">
+    <nav class="nav-container__inner">
+        <a class="home-link" href="/">shortURL</a>
+        <div class="stacked-div">
+            <ul class="top-nav">
+                <li><a href="/records">Saved URLs</a></li>
+            </ul>
+            <a href="https://github.com/kraftjs/url-shortener">
+                <img src="/images/github.svg" alt="shortURL github repo">
+            </a>
+        </div>
+    </nav>
+</header>
+
+<div class="hero">
+    <div class="hero__inner">
+        <h2>Show that link who's boss</h2>
+        <h5>no guarantees it will be shorter.</h5>
+    </div>
+</div>
+
+<div class="container">
+    <small>This is NOT a production website. Shortened links are temporary and are removed following 24 hours of inactivity. </small>
+    {{{body}}}
+</div>
+
+<footer class="page-footer">
+    <div class="page-footer__inner">MIT license &copy; 2021; photo by <a href="https://unsplash.com/@nathanfertig?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Nathan Fertig</a> on <a href="https://unsplash.com/photos/FV3GConVSss?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+    </div>
+</footer>
 </body>
 </html>

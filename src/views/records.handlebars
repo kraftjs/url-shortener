@@ -1,17 +1,25 @@
-<div>
-    <h1>Records:</h1>
-    {{#if records}}
-        <ul>
-            {{#each records}}
-                <li>
-                    <a href={{records.url}}>{{records.url}}</a>
-                    <small>hash: {{records.hash}}</small>
-                    <time datetime={{records.updated_at}}>{{records.updated_at}}</time>
-                </li>
-            {{/each}}
-        </ul>
-    {{else}}
-        <h2>No records are saved to the database.</h2>
-    {{/if}}
-
+<div class="tile-row">
+    <div class="tile">
+        {{#if records}}
+            <table>
+                <tr>
+                    <th>Key</th>
+                    <th>Original URL</th>
+                    <th>Time remaining</th>
+                    <th>Visits</th>
+                </tr>
+                {{#each records}}
+                    <tr>
+                        <td class="column_a"><a href="/records/{{hash}}">{{hash}}</a></td>
+                        <td class="column_b"><a href="{{url}}">{{url}}</a></td>
+                        <td class="column_c">{{timeRemaining updated_at}}</td>
+                        <td class="column_d">{{visits}}</td>
+                    </tr>
+                {{/each}}
+            </table>
+        {{else}}
+            <h2>Records</h2>
+            <h4>No records are saved to the database.</h4>
+        {{/if}}
+    </div>
 </div>

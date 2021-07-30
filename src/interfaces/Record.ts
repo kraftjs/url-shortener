@@ -1,3 +1,5 @@
+export const RECORD_TTL = 24;
+
 export type Hash = string;
 
 export type Url = string;

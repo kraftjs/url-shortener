@@ -3,7 +3,6 @@ import request from 'supertest';
 import app from '../../app';
 import db, { Table } from '../../database/connection';
 import { testRecord } from '../../../test/testUtils';
-import { ErrorMessage } from '../../errors';
 
 const server = app.listen(3000);
 
@@ -67,12 +66,10 @@ describe('HTTP POST on /records', () => {
     });
 
     test('responds with a 400 - Bad Request error when passed an invalid url', async () => {
-        const response = await request(app)
+        await request(app)
             .post('/records')
             .send({ url: 'invalidUrl' })
             .expect(400)
-            .expect('Content-Type', /json/);
-
-        expect(response.body).toEqual(ErrorMessage.BadRequest);
+            .expect('Content-Type', 'text/html; charset=utf-8');
     });
 });
