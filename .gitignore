@@ -1,7 +1,7 @@
 node_modules/
 requests/
 dist/
-src/public/css
+src/public/css/styles.css
 .idea
 .vscode
 .env
