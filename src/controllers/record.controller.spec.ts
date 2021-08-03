@@ -178,4 +178,3 @@ describe('Method recordController.redirectRecord', () => {
         expect(mNext).toBeCalledWith(Error(ErrorMessage.Internal));
     });
 });
-

@@ -1,9 +1,9 @@
-import {createHash} from 'crypto';
+import { createHash } from 'crypto';
 import isURL from 'validator/lib/isURL';
 
-import {recordModel} from '../models';
-import {RECORD_TTL, Hash, IRecord, Url} from '../interfaces/Record';
-import {ErrorMessage} from '../errors';
+import { recordModel } from '../models';
+import { Hash, IRecord, RECORD_TTL, Url } from '../interfaces/Record';
+import { ErrorMessage } from '../errors';
 
 class RecordService {
     public staleRecordsTimer;
@@ -38,7 +38,7 @@ class RecordService {
     }
 
     createRecord(url: Url): Promise<IRecord> {
-        if (isURL(url, {require_protocol: true})) {
+        if (isURL(url, { require_protocol: true })) {
             const hash = createHash('md5').update(url).digest('hex');
             return recordModel.insertRecord(hash, url);
         } else {

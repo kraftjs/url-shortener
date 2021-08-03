@@ -1,32 +1,32 @@
-import {Knex} from "knex";
-import 'dotenv/config'
+import { Knex } from 'knex';
+import 'dotenv/config';
 
 interface IKnexConfig {
     [key: string]: Knex.Config;
 }
 
 const config: IKnexConfig = {
-    'test': {
+    test: {
         client: 'pg',
         connection: process.env.TEST_DB_URL,
         migrations: {
             directory: './src/database/migrations',
         },
     },
-    'development': {
+    development: {
         client: 'pg',
         connection: process.env.DEV_DB_URL,
         migrations: {
             directory: './src/database/migrations',
         },
     },
-    'production': {
+    production: {
         client: 'pg',
         connection: process.env.DATABASE_URL,
         migrations: {
             directory: './src/database/migrations',
         },
     },
-}
+};
 
 export default config;
