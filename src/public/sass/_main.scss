@@ -41,11 +41,13 @@
   flex-direction: column;
   justify-content: space-between;
   margin: 0 auto;
-  width: 38em;
-  min-width: 38em;
+  max-width: fit-content;
 }
 
 .card__top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   margin: 0.25em;
 }
 
