@@ -8,7 +8,8 @@
     "sass": "sass --no-source-map src/public/sass/index.scss src/public/css/styles.css",
     "copyfiles": "copyfiles -u 1 \"./src/**/*.{css,svg,jpg,handlebars}\" dist",
     "build": "npm run clean && npm run sass && tsc -p tsconfig.json && npm run copyfiles",
-    "heroku-postbuild": "npm run build && npm run migrate:prod",
+    "heroku-postbuild": "npm run build",
+    "heroku-cleanup": "knex migrate:latest --knexfile dist/database/knexfile.js --env production",
     "start": "node dist/server.js",
     "start:dev": "npm run build && NODE_ENV=development node dist/server.js",
     "dev": "npm run sass && NODE_ENV=development nodemon src/server.ts",
@@ -16,11 +17,9 @@
     "migrate": "npm run migrate:test & npm run migrate:dev",
     "migrate:test": "knex migrate:latest --knexfile src/database/knexfile.ts --env test",
     "migrate:dev": "knex migrate:latest --knexfile src/database/knexfile.ts --env development",
-    "migrate:prod": "knex migrate:latest --knexfile src/database/knexfile.ts --env production",
     "rollback": "npm run rollback:test & npm run rollback:dev",
     "rollback:test": "knex migrate:rollback --knexfile src/database/knexfile.ts --env test",
-    "rollback:dev": "knex migrate:rollback --knexfile src/database/knexfile.ts --env development",
-    "rollback:prod": "knex migrate:rollback --knexfile src/database/knexfile.ts --env production"
+    "rollback:dev": "knex migrate:rollback --knexfile src/database/knexfile.ts --env development"
   },
   "repository": {
     "type": "git",
