@@ -13,6 +13,7 @@ class RecordService {
 
     constructor() {
         if (process.env.NODE_ENV !== 'test') {
+            this.removeStaleRecords();
             this.staleRecordsTimer = this.monitorStaleRecords();
         }
     }

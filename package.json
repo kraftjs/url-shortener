@@ -23,6 +23,9 @@
     "type": "git",
     "url": "git@me.github.com:kraftjs/url-shortener.git"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "author": "Jason Kraft",
   "license": "MIT",
   "dependencies": {
