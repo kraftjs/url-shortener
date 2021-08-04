@@ -26,12 +26,7 @@ const config: IKnexConfig = {
     },
     production: {
         client: 'pg',
-        connection: {
-            connectString: process.env.DATABASE_URL,
-            ssl: {
-                rejectUnauthorized: false,
-            },
-        },
+        connection: process.env.DATABASE_URL,
         migrations: {
             directory: './migrations',
         },
