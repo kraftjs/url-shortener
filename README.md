@@ -1,7 +1,7 @@
 # shortURL
 Are you looking for a URL shortening service that probably won't yield a shorter URL? What about one that deletes its records after 24 hours of inactivity? Does this dream website also require a header photo with a cat?  
 
-If this sounds like you, then [shortURL](https://kraftjs-url-shortener.herokuapp.com/) is exactly what you need! Check it out! (Love of cats is purely optional.)
+If this sounds like you, then ~~[shortURL](https://kraftjs-url-shortener.herokuapp.com/)~~(edit: unfortunately, Heroku removed their free hosting tier so this link no longer works) is exactly what you need! Check it out! (Love of cats is purely optional.)
 
 ### Features:
 
